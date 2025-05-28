@@ -1,0 +1,28 @@
+How does the SH1106 Display Images
+
+- The SH1106 OLED I bought is 128x64, (128 wide, 64 len)
+
+[] The SH1106 arranges its memory as an array of pages...
+
+[] Each page consists of 8 rows of pixels, so the OLED is updated a page at a time
+	Pg 0 -> Rows 0-7
+	Pg 1 -> Rows 8-15
+	Pg 2 -> Rows 16-23
+	Pg 3 -> Rows 24-31
+	...
+	Pg 7 -> Rows 56-63
+	
+	A byte in memory controls 8 pixels...
+	
+[] Visualization?
+	Imagine the memory region was set to all 0x00 (OFF) and this was sent to the OLED. It would be off.
+	Now imagine for Pg 0, all the bytes were set to 0xFF (ON), and the updated buffer was sent to the OLED
+	It would display a solid white line at the top...what does this mean to me?
+	
+[] A single byte controls a vertical line on the SH1106
+	ex) setting pg 0 row 0 to 0x00 will turn off all the pixels in a single vertical slice on that page
+		if everything else was set to 0xFF, then it would be small black line in the top left corner?
+
+[] Each row contains 128 columns of a byte...
+	ex) setting row 4-5 OFF in page 0. Write b1110 0111 = 0xD7 to all 128 columns in pg 0
+																					
