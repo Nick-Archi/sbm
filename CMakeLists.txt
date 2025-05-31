@@ -39,4 +39,4 @@ target_link_libraries(${TARG_NAME} PUBLIC
 
 # install $TARG_NAME static lib and header files for integration by other programs
 install(TARGETS ${TARG_NAME} DESTINATION /usr/local/lib)
-install(DIRECTORY include/ DESTINATION /usr/local/include/)
+install(DIRECTORY include/ DESTINATION /usr/local/include/sbm)

@@ -1,16 +1,15 @@
-# SBM (Simple BitMap) <WIP
+# SBM (Simple BitMap) <WIP>
 
 ## Table of Content
 [Overview](#overview)<br>
 [Objective](#objective)<br>
 [Setup](#setup)<br>
-[Building](#building)<br>
 [Executing](#installing)<br>
 [Resources](#resources)<br>
 
 ## Overview
 
-This is my attempt at creating a portable C library that can be used to link with other pico_sdk based projects in order for me to have functionality to write values to an SH1106 OLED via SPI.<br>
+I am creating a portable C library that will be used to link with other pico_sdk based projects to bring functionality to interact with a SH1106 OLED.<br>
 
 ## Objective
 
@@ -32,9 +31,19 @@ CS -> GP17(pin22)<br>
 Picture:
 ![SH1106 connected to RP2350](images/SH1106_with_RP2350.jpg)
 
-## Building 
-
 ## Installing
+```
+$ mkdir build && cd build && cmake ..
+$ make install
+```
+
+## Uninstalling
+- Executing "make install" will generate an install_manifest.txt
+- For now, just remove the files that were generated until I create a fancier way to do this
+```
+$ sudo rm -rf /usr/local/include/sbm
+$ sudo rm /usr/local/lib/libsbm.a
+```
 
 ## Resources
 
