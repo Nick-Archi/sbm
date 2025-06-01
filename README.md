@@ -30,7 +30,6 @@ RES -> GP20(pin26)<br>
 DC -> GP16(pin21)<br>
 CS -> GP17(pin22)<br>
 
-Picture:
 ![Simple BitMap on RP2350](images/sbm_on_pico2.jpg)<br>
 
 ## Installing
