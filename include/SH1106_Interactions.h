@@ -90,6 +90,10 @@ typedef struct SH1106_t
     SH1106_state init; // used to determine if oled struct initialized
 }SH1106;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
 * @brief Initializer function to create and initalize
 * an SH1106 object
@@ -242,10 +246,33 @@ void write_string(const unsigned char* val, size_t pg_start, size_t pos_start, s
 */
 void update_dirty_page(size_t pg, size_t offset);
 
+/*
+* @brief Clear the buffer to the OLED and write it to the screen.
+*
+* @return void
+*/
 void clear_buffer();
 
+/*
+* @brief Set the buffer to the OLED and write it to the screen.
+*
+* @return void
+*/
 void set_buffer();
 
+
+/*
+* @brief HELPER Function to write a character to a page.
+*
+* @param val, character
+* @param page, page number to write to
+*
+* @return void
+*/
 void insert_char(unsigned char val, size_t page);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _SH1106_INTERACTIONS_H_

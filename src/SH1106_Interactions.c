@@ -11,7 +11,7 @@
 #include "char_bitmap.h"
 #include "digi_bitmap_2.h"
 
-extern SH1106 oled;
+static SH1106 oled;
 
 /*
 * Array of bytes used to hold data to write to OLED
@@ -39,18 +39,12 @@ void init_SH1106(
     oled.cs = cs;
     oled.buffer = buffer;
     oled.init = UNINIT;
-
-    printf("DEBUG0\n");
-    printf("oled.dc = %d\noled.rst = %d\noled.cs = %d\noled.pico = %d\n\
-oled.clk = %d\noled.init = %d\n",\
-oled.dc, oled.rst, oled.cs, oled.pico, oled.clk, oled.init);
 }
 
 void initialize_spi()
 {
     if(oled.init != UNINIT)
     {
-        printf("Issue During Initialization\n");
         while(1);
     } 
  
@@ -65,7 +59,6 @@ void initialize_spi()
     gpio_put(oled.cs, 1); // CS -> high, no communication yet
     
     spi_init(SPI_PORT, BAUD);
-    printf("DEBUG: BAUD rate configured to = %d\n", spi_get_baudrate(SPI_PORT)); 
     
     // initialize & config gpio pins 
     gpio_set_function(oled.pico, GPIO_FUNC_SPI);
@@ -96,7 +89,6 @@ void configure_SH1106()
 {
     if(oled.init != INIT)
     {
-        printf("Ada struct not initialized\n");
         while(1);
     }
 
@@ -128,7 +120,6 @@ void reset_sh1106()
 {
     if(oled.init != INIT)
     {
-        printf("Issue w/ Initialization. Not resetting\n");
         while(1);
     }
 
@@ -142,7 +133,6 @@ void send_command_sh1106(uint8_t cmd)
 {
     if(oled.init != INIT)
     {
-        printf("Issue with Initialization. Not sending cmd data\n");
         while(1);
     }
 
@@ -157,7 +147,6 @@ void send_data_sh1106(uint8_t* data)
 {
     if(oled.init != INIT)
     {
-        printf("Issue with Initialization. Not sending data\n");
         while(1);
     }
 
@@ -172,7 +161,6 @@ void update_sh1106()
 {
     if(oled.init != INIT)
     {
-        printf("Ada struct not initialized\n");
         while(1);
     }
 
