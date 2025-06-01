@@ -19,7 +19,9 @@ I am creating a portable C library that will be used to link with other pico_sdk
 
 Here's how I setup the GPIO Ports on the Pico2<br>
 
-On SH1106 Connection:
+- Pin configurations can be modified in the SH1106_Interactions.h via macro definitions. However, the library will have to be rebuilt and reinstalled again.<br>
+
+On SH1106 Connection:<br>
 GND -> GND(pin 28)<br>
 VCC -> 3V3(OUT, pin 36)<br>
 CLK -> GP18(pin24)<br>
@@ -29,7 +31,7 @@ DC -> GP16(pin21)<br>
 CS -> GP17(pin22)<br>
 
 Picture:
-![SH1106 connected to RP2350](images/SH1106_with_RP2350.jpg)
+![Simple BitMap on RP2350](images/sbm_on_pico2.jpg)<br>
 
 ## Installing
 ```
