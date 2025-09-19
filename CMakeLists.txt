@@ -23,10 +23,16 @@ pico_sdk_init()
 # adding library
 add_library(${TARG_NAME} STATIC
     ${SOURCE_DIR}SH1106_Interactions.c
+    ${SOURCE_DIR}/driver/sh1106_driver.c
+    ${SOURCE_DIR}/display/display.c
+    ${SOURCE_DIR}/transport/spi_transport.c
 )
 
 target_include_directories(${TARG_NAME} PUBLIC 
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/display
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/driver
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/transport
 )
 
 target_link_libraries(${TARG_NAME} PUBLIC
