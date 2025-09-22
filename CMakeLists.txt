@@ -23,6 +23,7 @@ pico_sdk_init()
 # adding library
 add_library(${TARG_NAME} STATIC
     ${SOURCE_DIR}SH1106_Interactions.c
+    ${SOURCE_DIR}SH1106_Commands.c
     ${SOURCE_DIR}/driver/sh1106_driver.c
     ${SOURCE_DIR}/display/display.c
     ${SOURCE_DIR}/transport/spi_transport.c
@@ -44,5 +45,12 @@ target_link_libraries(${TARG_NAME} PUBLIC
 )
 
 # install $TARG_NAME static lib and header files for integration by other programs
-install(TARGETS ${TARG_NAME} DESTINATION /usr/local/lib)
-install(DIRECTORY include/ DESTINATION /usr/local/include/sbm)
+
+# install path
+#message(STATUS "Overriding default CMAKE_INSTALL_PREFIX to: " $ENV{HOME}/local)
+#set(CMAKE_INSTALL_PREFIX "$ENV{HOME}/local" CACHE PATH "Install Path" FORCE)
+
+message(STATUS "Final install prefix: ${CMAKE_INSTALL_PREFIX}")
+
+install(TARGETS ${TARG_NAME} DESTINATION lib)
+install(DIRECTORY include/ DESTINATION include/sbm)

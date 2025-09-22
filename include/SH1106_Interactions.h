@@ -21,22 +21,22 @@
 * SH1106 Display settings
 * I am only using a 128x64 display for now
 */
-#define SH1106_128_64
+#define OLED_SH1106_128_64
 
-#if defined SH1106_128_64
-  #define PAGES                  (8)
-  #define WIDTH                  (128)
-  #define HEIGHT                 (64)
-  #define BYTES                  ((HEIGHT * WIDTH) / 8)
+#if defined OLED_SH1106_128_64
+  #define OLED_PAGES                  (8)
+  #define OLED_WIDTH                  (128)
+  #define OLED_HEIGHT                 (64)
+  #define OLED_BYTES                  ((OLED_HEIGHT * OLED_WIDTH) / 8)
 #endif
 
 
 // SPI Configuration for Raspberry Pi RP2350
-#define PICO    PICO_DEFAULT_SPI_TX_PIN
-#define CS      PICO_DEFAULT_SPI_CSN_PIN
-#define CLK     PICO_DEFAULT_SPI_SCK_PIN
-#define POCI    PICO_DEFAULT_SPI_RX_PIN // DC pin on SH1106
-#define RST     20 // GPIO20 on RP2350
+#define OLED_PICO    PICO_DEFAULT_SPI_TX_PIN
+#define OLED_CS      PICO_DEFAULT_SPI_CSN_PIN
+#define OLED_CLK     PICO_DEFAULT_SPI_SCK_PIN
+#define OLED_POCI    PICO_DEFAULT_SPI_RX_PIN // DC pin on SH1106
+#define OLED_RST     20 // GPIO20 on RP2350
 
 #define SPI_PORT    spi0
 #define BAUD        (1000 * 1000)
@@ -50,34 +50,36 @@ typedef enum
 {
     UNINIT = 0,     /**< object has passed through parameter initialzation */
     INIT = 1,       /**< object has setup SPI comm */
-    CONFIGED = 2,   /**<  */
 }SH1106_state;
 
 /*
 * @struct page_desc_t
-* @brief Track individual page info
+* @brief Track page info
 * 
-* Typedef'd struct assisting in tracking individual info:
-* buffer address, page dirtied info,  
+* struct assisting in tracking info:
+* buffer address, page dirtied info (written or clean),  
 */
 typedef struct page_desc_t
 {
-    uint8_t* page;
+    uint8_t* page; /** pointer to data buffer */
     uint8_t dirtied; /** Dirtied (1), Clean (0) */
     uint8_t dirty_start_col; /** Start offset of dirty */
     uint8_t dirty_end_col; /** End offset of dirty */
-}page_desc;
+}page_desc_t;
 
 /*
-* Typedef'd struct assist accessing pages(0-7) in buffer 
+* @struct paged_buffer_t
+* @brief struct assist accessing pages(0-7) in buffer 
 */
 typedef struct paged_buffer_t
 {
-    page_desc pages[8];
-}paged_buffer;
+    page_desc_t pages[8];
+}paged_buffer_t;
 
 /*
-* Object that will hold configuration info for an SH1106 OLED 
+[TODO, 9/16/25] Is this really necessary? Or can I get rid of most info in the struct and rely on the macros?
+* @struct SH1106_t
+* @brief Object that will hold configuration info for an SH1106 OLED 
 */
 typedef struct SH1106_t
 {
@@ -104,7 +106,7 @@ extern "C" {
 * @param pico, GPIO pin for Controller Out Peripheral In
 * @param clk, GPIO pin for clock
 *
-* @return SH1106*, pointer to object
+* @return void 
 */
 void init_SH1106(
     uint8_t dc, 
@@ -190,7 +192,7 @@ void send_command_sh1106(uint8_t cmd);
 void send_data_sh1106(uint8_t* data);
 
 /*
-* @brief Send buffer data to OLED to update the display 
+* @brief Send buffer data to OLED to update the entire display 
 *
 * Pre-reqs: initialized SPI communication
 *
@@ -259,7 +261,6 @@ void clear_buffer();
 * @return void
 */
 void set_buffer();
-
 
 /*
 * @brief HELPER Function to write a character to a page.

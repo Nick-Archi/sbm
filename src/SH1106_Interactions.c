@@ -1,5 +1,6 @@
 /*
-* Objective: This file ultimately configures the SH1106 OLED.
+* Objective: This file includes functionality 
+* to configure and interact with the SH1106 OLED.
 *
 * I analyzed the steps found in the Adafruit_SH110x project: https://github.com/adafruit/Adafruit_SH110x/tree/master
 * 
@@ -16,12 +17,12 @@ static SH1106 oled;
 /*
 * Array of bytes used to hold data to write to OLED
 */
-static uint8_t buffer[BYTES]; // divide by 8 b/c accounting for byte per pixel
+static uint8_t buffer[OLED_BYTES]; // divide by 8 b/c accounting for byte per pixel
 
 /*
 * Assist with writing to specific pages in OLED buffer
 */
-static paged_buffer pg_buf;
+static paged_buffer_t pg_buf;
 
 void init_SH1106(
     uint8_t dc, 
@@ -49,25 +50,25 @@ void initialize_spi()
     } 
  
     // Reset the SH1106.
-    gpio_init(oled.rst);
-    gpio_set_dir(oled.rst, GPIO_OUT);
+    gpio_init(OLED_RST);
+    gpio_set_dir(OLED_RST, GPIO_OUT);
     sleep_ms(10); // delay for Vdd to stabilize 
 
     // initialize the CS pin & set pin dir
-    gpio_init(oled.cs);
-    gpio_set_dir(oled.cs, GPIO_OUT);
-    gpio_put(oled.cs, 1); // CS -> high, no communication yet
+    gpio_init(OLED_CS);
+    gpio_set_dir(OLED_CS, GPIO_OUT);
+    gpio_put(OLED_CS, 1); // CS -> high, no communication yet
     
     spi_init(SPI_PORT, BAUD);
     
     // initialize & config gpio pins 
-    gpio_set_function(oled.pico, GPIO_FUNC_SPI);
-    gpio_set_function(oled.clk, GPIO_FUNC_SPI);
+    gpio_set_function(OLED_PICO, GPIO_FUNC_SPI);
+    gpio_set_function(OLED_CLK, GPIO_FUNC_SPI);
 
     // initialize the DC pin & set pin dir
-    gpio_init(oled.dc);
-    gpio_set_dir(oled.dc, GPIO_OUT);
-    gpio_put(oled.dc, 0);
+    gpio_init(OLED_POCI);
+    gpio_set_dir(OLED_POCI, GPIO_OUT);
+    gpio_put(OLED_POCI, 0);
 
     init_page_buffer();
 
@@ -97,7 +98,7 @@ void configure_SH1106()
 
     sleep_ms(3000);
     // send data over from array
-    for(int i = 0; i < sizeof(init_config_steps)/sizeof(uint8_t); i++)
+    for(int i = 0; i < count_of(init_config_steps); i++)
     {
         send_command_sh1106(init_config_steps[i]);
     }
@@ -175,12 +176,12 @@ void update_sh1106()
         set_column_address(0); //[TODO] Possibly refine this so it starts at dirty col start?
 
         // write each byte in that page to OLED
-        for(uint8_t i = 0; i < WIDTH; i++)
+        for(uint8_t i = 0; i < OLED_WIDTH; i++)
         {
             /*
             * This is performing a type of offset. Think of it as
             * addressing a 2D array as a 1D vector.
-            * ex) page = 1, i = 0, [1 * 128 + 0], access buffer[128] -
+            * ex) page = 1, i = 0, [1(page) * 128 + 0], access buffer[128] through
             * buffer[256], that's 128 bytes for page 1...
             */
 
@@ -277,7 +278,7 @@ void write_string(const unsigned char* val, size_t pg_start, size_t pos_start, s
 
 void update_dirty_page(size_t pg, size_t offset)
 {
-    page_desc* desc_ptr = &pg_buf.pages[pg - 1];
+    page_desc_t* desc_ptr = &pg_buf.pages[pg - 1];
     desc_ptr->dirtied = 1;
     desc_ptr->dirty_start_col = (desc_ptr->dirty_start_col > offset) ? offset : desc_ptr->dirty_start_col; 
     desc_ptr->dirty_end_col = (desc_ptr->dirty_end_col < offset) ? offset : desc_ptr->dirty_end_col; 
@@ -285,7 +286,7 @@ void update_dirty_page(size_t pg, size_t offset)
 
 void clear_buffer()
 {
-    memset(buffer, 0x00, BYTES);
+    memset(buffer, 0x00, OLED_BYTES);
     for(int i = 0; i < 8; ++i)
     {
         send_command_sh1106(SH1106_PAGE_OFFSET(i));
@@ -293,14 +294,14 @@ void clear_buffer()
         gpio_put(oled.dc, 1); // Cmd mode
         gpio_put(oled.cs, 0);
         sleep_ms(10);
-        spi_write_blocking(SPI_PORT, buffer, BYTES/8);
+        spi_write_blocking(SPI_PORT, buffer, OLED_BYTES/8);
         gpio_put(oled.cs, 1);
     }
 }
 
 void set_buffer()
 {
-    memset(buffer, 0xFF, BYTES);
+    memset(buffer, 0xFF, OLED_BYTES);
     for(int i = 0; i < 8; ++i)
     {
         send_command_sh1106(SH1106_PAGE_OFFSET(i));
@@ -308,7 +309,7 @@ void set_buffer()
         gpio_put(oled.dc, 1); // Cmd mode
         gpio_put(oled.cs, 0);
         sleep_ms(10);
-        spi_write_blocking(SPI_PORT, buffer, BYTES/8);
+        spi_write_blocking(SPI_PORT, buffer, OLED_BYTES/8);
         gpio_put(oled.cs, 1);
     }
 }

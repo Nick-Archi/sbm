@@ -2,7 +2,7 @@
 * @brief Declaration for display module 
 * @details
 * This module deals with creating a display object for managing 
-* specific displays. It creates functionality to initialize, update, 
+* specific displays. It mandates functionality to initialize, update, 
 * and write strings to the managed display. 
 */
 
@@ -21,7 +21,6 @@ typedef struct DisplayTransport DisplayTransport;
 * @details
 * This struct deals with keeping track of info
 * regarding if a page has been written (dirtied)
-* 
 */
 typedef struct
 {
@@ -53,9 +52,41 @@ typedef struct Display
     void* ctx; /**< context info regarding transport calls */
 }Display;
 
+/*
+* @brief initialize the display
+*
+* @details This function will call the necessary steps/sequence 
+* to initialize the display.
+*
+* @param display, pointer to display object 
+*/
 void display_init(Display* display);
+
+/*
+* @brief Update the display
+*
+* @details This function will call the necessary steps/sequence 
+* to update the display.
+*
+* @param display, pointer to display object 
+*/
 void display_update(Display* display);
+
+/*
+* @brief Clear the display buffer
+*
+* @param display, pointer to display object 
+*/
 void display_clear(Display* display);
+
+/*
+* @brief Writes a string to the display buffer
+*
+* @param str, data to write 
+* @param pg_start, starting page to write into
+* @param pos_start, starting position in page
+* @param total_size, total number of bytes to write
+*/
 void display_write_string(Display* display, char* str, size_t pg_start, size_t pos_start, size_t total_size);
 
 #endif // _DISPLAY_H_

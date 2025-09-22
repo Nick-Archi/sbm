@@ -8,10 +8,13 @@
 
 #include "display.h"
 
+/*
+* @brief struct carrying implementation of transport functionality
+*/
 typedef struct DisplayTransport
 {
-    void (*send_command)(Display* display, uint8_t cmd);
-    void (*send_data)(Display* display, const uint8_t* data, size_t len);
+    void (*send_command)(Display* display, const uint8_t cmd); /**< send command to display */
+    void (*send_data)(Display* display, const uint8_t data); /** send data to display */
 }DisplayTransport;
 
 #endif // _TRANSPORT_H_
