@@ -13,8 +13,8 @@
 */
 typedef struct DisplayTransport
 {
-    void (*send_command)(Display* display, const uint8_t cmd); /**< send command to display */
-    void (*send_data)(Display* display, const uint8_t data); /** send data to display */
+    void (*send_command)(Display* display, const uint8_t* cmd, size_t len); /**< send command to display */
+    void (*send_data)(Display* display, const uint8_t* data, size_t len); /** send data to display */
 }DisplayTransport;
 
 #endif // _TRANSPORT_H_

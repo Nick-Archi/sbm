@@ -4,30 +4,28 @@
 
 #include "spi_transport.h"
 
-static void spi_send_command(Display* display, const uint8_t cmd)
+static void spi_send_command(Display* display, const uint8_t* cmd, size_t len)
 {
-printf("Dbg: Writing %d bytes\n", cmd);
     SpiTransportConfig* cfg = (SpiTransportConfig*)display->ctx;
     gpio_put(cfg->dc, 0);
     gpio_put(cfg->cs, 0);
     sleep_ms(10);
-    spi_write_blocking(cfg->spi, &cmd, 1);
+    spi_write_blocking(cfg->spi, cmd, len);
     gpio_put(cfg->cs, 1);
 }
 
-static void spi_send_data(Display* display, const uint8_t data)
+static void spi_send_data(Display* display, const uint8_t* data, size_t len)
 {
     SpiTransportConfig* cfg = (SpiTransportConfig*)display->ctx;
     gpio_put(cfg->dc, 1);
     gpio_put(cfg->cs, 0);
     sleep_ms(10);
-    spi_write_blocking(cfg->spi, &data, 1);
+    spi_write_blocking(cfg->spi, data, len);
     gpio_put(cfg->cs, 1);
 }
 
 void spi_transport_init(const SpiTransportConfig* cfg)
 {
-printf("Dbg: SpiTransportConfig: cs = %d, clk = %d, dc = %d, pico = %d, rst = %d, baud = %d\n", cfg->cs, cfg->clk, cfg->dc, cfg->pico, cfg->rst, cfg->baud);
     // reset sh1106
     gpio_init(cfg->rst);
     gpio_set_dir(cfg->rst, GPIO_OUT);

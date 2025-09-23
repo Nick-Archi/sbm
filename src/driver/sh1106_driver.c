@@ -10,7 +10,6 @@
 
 static void init(Display* display)
 {
-printf("Dbg: Within init for sh1106 driver .c\n");
     // configure the SH1106
     SpiTransportConfig* ctx = (SpiTransportConfig*)display->ctx; 
     gpio_put(ctx->rst, 0);
@@ -20,14 +19,11 @@ printf("Dbg: Within init for sh1106 driver .c\n");
     sleep_ms(3000);
     
     // send init data to SH1106
-    for(int i = 0; i < count_of(init_config_steps); ++i)
-    {
-        display->transport->send_command(display, init_config_steps[i]);
-    }
-//    display->transport->send_command(display, init_config_steps, count_of(init_config_steps));
+    display->transport->send_command(display, init_config_steps, count_of(init_config_steps));
 
     // turn on display
-    display->transport->send_command(display, SH1106_DISPLAYON);
+    uint8_t cmd = SH1106_DISPLAYON;
+    display->transport->send_command(display, &cmd, 1);
     sleep_ms(500);
 
 }
