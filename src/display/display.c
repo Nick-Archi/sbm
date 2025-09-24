@@ -1,3 +1,7 @@
+/*
+* @brief Implementation for display module 
+*/
+
 #include "display.h"
 #include "driver.h"
 
@@ -10,6 +14,7 @@ void display_update(Display* display)
 {
     display->driver->update(display);
 }
+
 void display_clear(Display* display)
 {
     display->driver->clear(display);

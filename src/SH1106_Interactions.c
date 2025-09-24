@@ -306,7 +306,7 @@ void set_buffer()
     {
         send_command_sh1106(SH1106_PAGE_OFFSET(i));
         set_column_address(0); 
-        gpio_put(oled.dc, 1); // Cmd mode
+        gpio_put(oled.dc, 1); // data mode
         gpio_put(oled.cs, 0);
         sleep_ms(10);
         spi_write_blocking(SPI_PORT, buffer, OLED_BYTES/8);

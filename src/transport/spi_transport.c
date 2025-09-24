@@ -4,13 +4,20 @@
 
 #include "spi_transport.h"
 
-static void spi_send_command(Display* display, const uint8_t* cmd, size_t len)
+/*
+* @brief send data as a command to display
+*
+* @param display, pointer to display object
+* @param cmd, pointer to uint8_t data
+* @param len, how many bytes to send
+*/
+static void spi_send_command(Display* display, const uint8_t* data, size_t len)
 {
     SpiTransportConfig* cfg = (SpiTransportConfig*)display->ctx;
     gpio_put(cfg->dc, 0);
     gpio_put(cfg->cs, 0);
     sleep_ms(10);
-    spi_write_blocking(cfg->spi, cmd, len);
+    spi_write_blocking(cfg->spi, data, len);
     gpio_put(cfg->cs, 1);
 }
 

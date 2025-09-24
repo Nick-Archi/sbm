@@ -5,7 +5,7 @@
 #ifndef _SPI_TRANSPORT_H_
 #define _SPI_TRANSPORT_H_
 
-// pico-sdk calls
+// pico-sdk includes 
 #include "hardware/gpio.h"
 #include "hardware/spi.h"
 #include "pico/time.h"
@@ -13,7 +13,7 @@
 #include "transport.h"
 
 /*
-* object that holds the SPI implementation
+* instance for SPI implementation
 */
 extern const DisplayTransport SPI_TRANSPORT; 
 

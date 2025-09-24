@@ -24,31 +24,29 @@ typedef struct DisplayTransport DisplayTransport;
 */
 typedef struct
 {
-    uint8_t* pg; /**< pointer to underlying data buffer */
+    uint8_t* buf; /**< pointer to underlying data buffer */
     uint8_t dirty; /**< dirtied (1) */
     uint8_t dirty_start_col; /**< start offset of write */
     uint8_t dirty_end_col; /**< end offset of write */
-}page_desc;
+}DisplayPageInfo;
 
 /*
 * @brief This struct essentially splits the data buffer into pages 
 */
 typedef struct 
 {
-    page_desc* pgs; /**< pointer to allocated buffer */
-    int num_of_pgs; /**< number of pages in buffer */
-}paged_buffer;
+    DisplayPageInfo* page; /**< pointer to page descriptor */
+    int num_of_pages; /**< number of descriptor */
+}DisplayPages;
 
 /*
 * @brief struct that keeps track of info & function for underlying display
 */
 typedef struct Display
 {
-    const DisplayDriver* driver; /**< buffer interaction */
-    const DisplayTransport* transport; /**< underlying transport calls */
-    paged_buffer buffer; /**< buffer */
-    uint8_t width; /**< width of display */
-    uint8_t height; /**< height of display */
+    const DisplayDriver* driver; /**< pointer to display obj */
+    const DisplayTransport* transport; /**< pointer to transport obj */
+    DisplayPages* pg_buf; /**< pointer to buffer obj */
     void* ctx; /**< context info regarding transport calls */
 }Display;
 
