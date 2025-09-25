@@ -12,6 +12,10 @@
 
 #include "transport.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
 * instance for SPI implementation
 */
@@ -26,7 +30,7 @@ typedef struct SpiTransportConfig
     uint8_t cs; /**< chip select */
     uint8_t clk; /**< clock */
     uint8_t dc; /**< cmd select */
-    uint8_t pico; /**< not needed? */ //[TODO]
+    uint8_t pico; /**< dc */ 
     uint8_t rst; /**< reset */
     uint32_t baud; /**< baud rate */
 }SpiTransportConfig;
@@ -35,5 +39,9 @@ typedef struct SpiTransportConfig
 * @brief initialize & configure underlying SPI interface
 */
 void spi_transport_init(const SpiTransportConfig* cfg);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _SPI_TRANSPORT_H_

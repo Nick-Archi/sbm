@@ -8,6 +8,10 @@
 
 #include "display.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
 * @brief struct containing functions pertaining to display 
 * @details
@@ -20,5 +24,9 @@ typedef struct DisplayDriver
     void (*update)(Display* display); /**< update implementation */
     void (*clear)(Display* display); /**< clear implementation */
 }DisplayDriver;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _DRIVER_H_

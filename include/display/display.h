@@ -12,6 +12,10 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // forward declare driver and transport structs
 typedef struct DisplayDriver DisplayDriver;
 typedef struct DisplayTransport DisplayTransport;
@@ -19,8 +23,8 @@ typedef struct DisplayTransport DisplayTransport;
 /*
 * @brief dirty page info
 * @details
-* This struct deals with keeping track of info
-* regarding if a page has been written (dirtied)
+* This struct deals with keeping track of info 
+* if a page has been written (dirtied)
 */
 typedef struct
 {
@@ -31,7 +35,7 @@ typedef struct
 }DisplayPageInfo;
 
 /*
-* @brief This struct essentially splits the data buffer into pages 
+* @brief This struct splits the data buffer into pages 
 */
 typedef struct 
 {
@@ -41,14 +45,16 @@ typedef struct
 
 /*
 * @brief struct that keeps track of info & function for underlying display
+* @details overlying struct that is used to keep track of the info
+* pertaining to the type of display in use
 */
 typedef struct Display
 {
     const DisplayDriver* driver; /**< pointer to display obj */
     const DisplayTransport* transport; /**< pointer to transport obj */
     DisplayPages* pg_buf; /**< pointer to buffer obj */
-    uint8_t width;
-    uint8_t height;
+    uint8_t width; /**< width of display */
+    uint8_t height; /**< height of display */
     void* ctx; /**< context info regarding transport calls */
 }Display;
 
@@ -89,5 +95,9 @@ void display_clear(Display* display);
 * @param total_size, total number of bytes to write
 */
 void display_write_string(Display* display, const unsigned char* str, size_t pg_start, size_t pos_start, size_t total_size);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _DISPLAY_H_
