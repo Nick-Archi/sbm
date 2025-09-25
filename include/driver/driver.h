@@ -19,7 +19,6 @@ typedef struct DisplayDriver
     void (*init)(Display* display); /**< initialization implementation*/
     void (*update)(Display* display); /**< update implementation */
     void (*clear)(Display* display); /**< clear implementation */
-    void (*write_string)(Display* display); /**< write_string implementation */
 }DisplayDriver;
 
 #endif // _DRIVER_H_

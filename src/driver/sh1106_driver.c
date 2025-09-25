@@ -2,10 +2,6 @@
 * @brief Implementation file for the SH1106 OLED
 */
 
-// pico-sdk includes 
-#include "hardware/gpio.h"
-#include "pico/time.h"
-
 #include <stdlib.h>
 
 #include "spi_transport.h"
@@ -97,23 +93,20 @@ static void clear(Display* display)
     } 
 }
 
-static void write_string(Display* display)
-{
-
-}
-
 const DisplayDriver SH1106_DRIVER = {
     .init = init,
     .update = update,
     .clear = clear,
-    .write_string = write_string 
 };
 
-void setup_display_sh1106(Display* display, DisplayPages* desc, DisplayPageInfo* info, size_t num_of_pages, uint8_t* buffer)
+void setup_display_sh1106(Display* display, DisplayPages* desc, DisplayPageInfo* info, size_t width, size_t height, size_t num_of_pages, uint8_t* buffer)
 {
     // setup of Display objects
     display->driver = &SH1106_DRIVER;
     display->transport = &SPI_TRANSPORT;
+
+    display->width = width;
+    display->height = height;
     
     // buffer setup
     display->pg_buf = desc;

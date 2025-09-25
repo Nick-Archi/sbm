@@ -38,6 +38,6 @@ extern const DisplayDriver SH1106_DRIVER;
 * @param num_of_pages, number of pages for display 
 * @param buffer, allocated memory region for oled screen 
 */
-void setup_display_sh1106(Display* display, DisplayPages* desc, DisplayPageInfo* info, size_t num_of_pages, uint8_t* buffer);
+void setup_display_sh1106(Display* display, DisplayPages* desc, DisplayPageInfo* info, size_t width, size_t height, size_t num_of_pages, uint8_t* buffer);
 
 #endif // _SH1106_DRIVER_H_

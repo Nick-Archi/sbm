@@ -47,6 +47,8 @@ typedef struct Display
     const DisplayDriver* driver; /**< pointer to display obj */
     const DisplayTransport* transport; /**< pointer to transport obj */
     DisplayPages* pg_buf; /**< pointer to buffer obj */
+    uint8_t width;
+    uint8_t height;
     void* ctx; /**< context info regarding transport calls */
 }Display;
 
@@ -80,11 +82,12 @@ void display_clear(Display* display);
 /*
 * @brief Writes a string to the display buffer
 *
+* @param display, display object
 * @param str, data to write 
 * @param pg_start, starting page to write into
 * @param pos_start, starting position in page
 * @param total_size, total number of bytes to write
 */
-void display_write_string(Display* display, char* str, size_t pg_start, size_t pos_start, size_t total_size);
+void display_write_string(Display* display, const unsigned char* str, size_t pg_start, size_t pos_start, size_t total_size);
 
 #endif // _DISPLAY_H_
