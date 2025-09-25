@@ -65,7 +65,7 @@ static void update(Display* display)
         display->transport->send_command(display, &cmd, 1);
         set_column_address(display, 0);
        
-//[TODO] likely update this so that it can write only the number of bytes that have been changed? 
+//[TODO] likely update this so that it can write only the number of bytes that have been changed? the set_column_address() will also need to point to the dirty col start
         for(uint8_t byte = 0; byte < SH1106_WIDTH; ++byte)
         {
             /*

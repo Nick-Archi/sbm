@@ -51,8 +51,6 @@ static void write_to_page(Display* display, const uint8_t* data, size_t pg, size
     if(data == NULL || pg < 1 || pg > display->pg_buf->num_of_pages || size > ((display->width*display->height)/8) || offset > (display->width/8))
     { return; }
 
-printf("Dbg9\n");
-
     update_dirty_page(&display->pg_buf->page[pg-1], offset);
     memcpy(display->pg_buf->page[pg - 1].buf + (offset * 8), data, size);
 }
@@ -62,7 +60,7 @@ printf("Dbg9\n");
 *
 * @param val, ascii value for a character
 *
-* @return pointer to uint8_t 
+* @return uint8_t*, address to char map 
 */
 static const uint8_t* char_to_bitmap(unsigned char val)
 {
@@ -111,12 +109,11 @@ void display_clear(Display* display)
 
 void display_write_string(Display* display, const unsigned char* str, size_t pg_start, size_t pos_start, size_t total_size)
 {
-printf("Dbg6\n");
     if(str == NULL || pg_start > display->pg_buf->num_of_pages || 
         pg_start < 1 || pos_start > (display->width / 8) || 
         total_size > display->width)
     { return; }
-printf("Dbg7\n");
+
     size_t offset = pos_start;
     for(size_t idx = 0; idx < (total_size/8); ++idx)
     {
@@ -124,9 +121,7 @@ printf("Dbg7\n");
         if(addr == NULL)
         { return; }
         
-        // write byte to page buffer
         write_to_page(display, addr, pg_start, offset, 8);
         offset++;
-printf("Dbg8\n");
     }
 }
