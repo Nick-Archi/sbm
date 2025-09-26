@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 #include "spi_transport.h"
-#include "SH1106_Commands.h"
+#include "sh1106_commands.h"
 #include "sh1106_driver.h"
 
 /*

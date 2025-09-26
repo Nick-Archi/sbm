@@ -3,7 +3,7 @@
 * SH1106 display
 */
 
-#include "SH1106_Commands.h"
+#include "sh1106_commands.h"
 
 const uint8_t init_config_steps[22] =
 {

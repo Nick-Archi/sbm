@@ -22,9 +22,9 @@ pico_sdk_init()
 
 # adding library
 add_library(${TARG_NAME} STATIC
-    ${SOURCE_DIR}SH1106_Commands.c
-    ${SOURCE_DIR}/driver/sh1106_driver.c
     ${SOURCE_DIR}/display/display.c
+    ${SOURCE_DIR}/driver/sh1106_commands.c
+    ${SOURCE_DIR}/driver/sh1106_driver.c
     ${SOURCE_DIR}/transport/spi_transport.c
 )
 
