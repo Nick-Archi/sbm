@@ -16,7 +16,6 @@ I am creating a portable C library that will be used to link with other pico_sdk
 
 - [ ] Create portable library containing basic SH1106 OLED functionality.<br>
 - [ ] Refactor library to make it more modular.<br>
-- [ ] Implement i2c functionality in the transport layer.<br>
 
 ## Setup
 
