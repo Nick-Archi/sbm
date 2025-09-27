@@ -32,6 +32,11 @@ static void set_column_address(Display* display, uint8_t col)
     display->transport->send_command(display, &cmd, 1);      
 }
 
+/*
+* @brief initialize the sh1106 
+*
+* @param display, pointer to display object
+*/
 static void init(Display* display)
 {
     // configure the SH1106
@@ -52,31 +57,43 @@ static void init(Display* display)
 
 }
 
+/*
+* @brief update the sh1106 screen 
+*
+* @param display, pointer to display object
+*/
 static void update(Display* display)
 {
     for(size_t idx = 0; idx < display->pg_buf->num_of_pages; ++idx)
     {
-        if(!display->pg_buf->page[idx].dirty)
+        DisplayPages* dp = display->pg_buf;
+        if(!dp->page[idx].dirty)
         {
             continue;
         }
 
         uint8_t cmd = SH1106_PAGE_OFFSET(idx);
         display->transport->send_command(display, &cmd, 1);
-        set_column_address(display, 0);
+        set_column_address(display, dp->page[idx].dirty_start_col);
        
-//[TODO] likely update this so that it can write only the number of bytes that have been changed? the set_column_address() will also need to point to the dirty col start
-        for(uint8_t byte = 0; byte < SH1106_WIDTH; ++byte)
-        {
-            /*
-            * This is performing a type of offset. Think of it as
-            * addressing a 2D array as a 1D vector.
-            * ex) page = 1, i = 0, [1(page) * 128 + 0], access buffer[128] through
-            * buffer[256], that's 128 bytes for page 1...
-            */
+//[TODO] Clean this up since it looks really gnarly?
+        /*
+        * Send data from the page buffer starting at dirty_start_col.
+        * Offsets are performed by multiplying the dirty_start_col by 8.
+        * This is because the current bitmaps characters are 
+        * 8 bytes wide so their positioning in the underying buffer is 
+        * affected by this.
+        * ie) page = 1, i = 0, [1(page) * 128 + 0], access buffer[128] through
+        * buffer[256], that's 128 bytes for page 1...
+        */
 
-            display->transport->send_data(display, &display->pg_buf->page[idx].buf[byte], 1); 
-        }
+        /*
+        * The amount of data to send would be determined by subtracting
+        * the dirty_start_col from the dirty_end_col, +1 because of 
+        * index at 0. Remember that writing to col 1 is actually writing
+        * to idx = 1 * 8 in the underlying buffer. 
+        */
+        display->transport->send_data(display, &(dp->page[idx].buf[dp->page[idx].dirty_start_col * 8]), ((dp->page[idx].dirty_end_col - dp->page[idx].dirty_start_col) + 1) * 8);
 
         display->pg_buf->page[idx].dirty = 0;
         display->pg_buf->page[idx].dirty_start_col = UINT8_MAX;
@@ -84,12 +101,19 @@ static void update(Display* display)
     }
 }
  
+/*
+* @brief clear the oled screen 
+*
+* @param display, pointer to display object
+*/
 static void clear(Display* display)
 {
-    memset(display->pg_buf->page[0].buf, 0x00, SH1106_BYTES);
     for(size_t i = 0; i < SH1106_PAGES; ++i)
     {
+        memset(display->pg_buf->page[i].buf, 0x00, SH1106_WIDTH);
         display->pg_buf->page[i].dirty = 1;
+        display->pg_buf->page[i].dirty_start_col = 0;
+        display->pg_buf->page[i].dirty_end_col = 15;
     } 
 }
 

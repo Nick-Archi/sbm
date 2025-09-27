@@ -37,6 +37,8 @@ typedef struct SpiTransportConfig
 
 /*
 * @brief initialize & configure underlying SPI interface
+*
+* @param cfg, pointer that will contain the spitransport info
 */
 void spi_transport_init(const SpiTransportConfig* cfg);
 

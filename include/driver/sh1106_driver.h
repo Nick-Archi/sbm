@@ -30,11 +30,11 @@ extern const DisplayDriver SH1106_DRIVER;
 /*
 * @brief function to initialize the sh1106 display
 *
-* @details
-* The display object should already have 
 * @param display, object pretaining to sh1106 obj
 * @param desc, allocated DisplayPage object 
-* @param info, allocated DisplayPageInfo object 
+* @param info, allocated DisplayPageInfo object
+* @param width, width of display
+* @param height, height of display 
 * @param num_of_pages, number of pages for display 
 * @param buffer, allocated memory region for oled screen 
 */

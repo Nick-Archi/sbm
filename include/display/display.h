@@ -24,7 +24,10 @@ typedef struct DisplayTransport DisplayTransport;
 * @brief dirty page info
 * @details
 * This struct deals with keeping track of info 
-* if a page has been written (dirtied)
+* if a page has been written (dirtied).
+* Each character is 8 bytes in width, because of this
+* moving to the next dirty_start_col++ is moving by 8 bytes
+* in the underlying buffer
 */
 typedef struct
 {
@@ -39,8 +42,8 @@ typedef struct
 */
 typedef struct 
 {
-    DisplayPageInfo* page; /**< pointer to page descriptor */
-    int num_of_pages; /**< number of descriptor */
+    DisplayPageInfo* page; /**< pointer to page info */
+    int num_of_pages; /**< number of pages */
 }DisplayPages;
 
 /*

@@ -5,10 +5,10 @@
 #include "spi_transport.h"
 
 /*
-* @brief send data as a command to display
+* @brief send a command to display
 *
 * @param display, pointer to display object
-* @param cmd, pointer to uint8_t data
+* @param data, pointer to uint8_t data
 * @param len, how many bytes to send
 */
 static void spi_send_command(Display* display, const uint8_t* data, size_t len)
@@ -20,6 +20,13 @@ static void spi_send_command(Display* display, const uint8_t* data, size_t len)
     gpio_put(cfg->cs, 1);
 }
 
+/*
+* @brief send data to display
+*
+* @param display, pointer to display object
+* @param data, pointer to uint8_t data
+* @param len, how many bytes to send
+*/
 static void spi_send_data(Display* display, const uint8_t* data, size_t len)
 {
     SpiTransportConfig* cfg = (SpiTransportConfig*)display->ctx;
@@ -52,6 +59,10 @@ void spi_transport_init(const SpiTransportConfig* cfg)
     gpio_put(cfg->dc, 0);
 }
 
+/*
+* @brief singular object holding functionality
+* for spi communication
+*/
 const DisplayTransport SPI_TRANSPORT = {
     .send_command = spi_send_command,
     .send_data = spi_send_data,
