@@ -4,6 +4,7 @@
 [Overview](#overview)<br>
 [Objective](#objective)<br>
 [Setup](#setup)<br>
+[Example](#example)<br>
 [Executing](#installing)<br>
 [Resources](#resources)<br>
 
@@ -14,14 +15,18 @@ I am creating a portable C library that will be used to link with other pico_sdk
 ## Objective
 
 - [ ] Create portable library containing basic SH1106 OLED functionality.<br>
+- [ ] Refactor library to make it more modular.<br>
 
 ## Setup
 
 Here's how I setup the GPIO Ports on the Pico2<br>
 
-- Pin configurations can be modified in the SH1106_Interactions.h via macro definitions. However, the library will have to be rebuilt and reinstalled again.<br>
+Pin configurations are defined by initializing the Transport object. But the pin configurations I used for my initial testing are below.<br>
 
-On SH1106 Connection:<br>
+[FreeRTOS Context](https://github.com/Nick-Archi/pico-freertos-playground/tree/main/04_isrs)<br>
+[Purely pico-sdk context](https://github.com/Nick-Archi/pico-playground/tree/main/pico_spi)<br>
+
+On SH1106 Connection (SPI Communication):<br>
 GND -> GND(pin 28)<br>
 VCC -> 3V3(OUT, pin 36)<br>
 CLK -> GP18(pin24)<br>
@@ -29,6 +34,10 @@ MOSI -> GP19(pin25)<br>
 RES -> GP20(pin26)<br>
 DC -> GP16(pin21)<br>
 CS -> GP17(pin22)<br>
+
+## Example
+
+I have already used the library in some of my other repos. You can go to these links to see how I've initialized the library in different contexts.<br>
 
 ![Simple BitMap on RP2350](images/sbm_on_pico2.jpg)<br>
 
